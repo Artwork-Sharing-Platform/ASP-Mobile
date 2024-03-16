@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "97635408020",
+    "project_id": "logingmail-384608",
+    "storage_bucket": "logingmail-384608.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97635408020:android:488df43cc2ac8fa2807c81",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97635408020-6be83q1cum1hl39f132104ooullnc1b3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "c28deb2c1d34e718b566cf8e566a09c1be59f9a9"
+          }
+        },
+        {
+          "client_id": "97635408020-j8tupnetie83fhfc127ngdgudgvmhobv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk5NEINDqQIRdIjQ5-gxeDszbHaUy81kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97635408020-j8tupnetie83fhfc127ngdgudgvmhobv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
