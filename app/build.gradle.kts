@@ -40,14 +40,15 @@ android {
 }
 
 dependencies {
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.picasso:picasso:2.71828")
-    implementation ("com.google.android.gms:play-services-auth:21.0.0")
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
-    implementation ("com.google.firebase:firebase-auth-ktx")
-    implementation ("com.google.firebase:firebase-auth:21.0.1")
+    implementation("com.google.code.gson:gson:2.8.7") // Giảm phiên bản Gson xuống 2.8.7
+    implementation("com.squareup.retrofit2:retrofit:2.8.2") // Giảm phiên bản Retrofit xuống 2.8.2
+    implementation("com.squareup.retrofit2:converter-gson:2.8.2") // Giảm phiên bản Converter Gson xuống 2.8.2
+    implementation ("com.squareup.picasso:picasso:2.71828") // Giữ nguyên phiên bản của Picasso
+    implementation ("com.google.android.gms:play-services-auth:20.0.0") // Giảm phiên bản Play Services Auth xuống 20.0.0
+    implementation(platform("com.google.firebase:firebase-bom:28.4.0")) // Giảm phiên bản Firebase BOM xuống 28.4.0
+    implementation ("com.google.firebase:firebase-auth-ktx") // Giữ nguyên phiên bản của Firebase Auth KTX
+    implementation ("com.google.firebase:firebase-auth:21.0.0") // Giảm phiên bản Firebase Auth xuống 21.0.0
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
