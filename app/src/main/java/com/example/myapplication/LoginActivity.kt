@@ -9,12 +9,15 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.API.ApiService
+import com.example.myapplication.Models.User
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.PasswordRequestOptions
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -39,9 +42,16 @@ class LoginActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
 
+        val sharedPref = getSharedPreferences("MySession", MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
+        if (isLoggedIn) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         auth = Firebase.auth
         oneTapClient = Identity.getSignInClient(this)
-
         signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
@@ -77,18 +87,47 @@ class LoginActivity : AppCompatActivity(){
                         auth.signInWithCredential(firebaseCredential).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 // Đăng nhập thành công, chuyển đến MainActivity
+
+                                val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this)
+
+                                val firstName = googleSignInAccount?.givenName ?: ""
+                                val lastName = googleSignInAccount?.familyName ?: ""
+                                val currentUser = auth.currentUser
+                                val email = currentUser?.email ?: ""
+                                val displayName = currentUser?.displayName ?: ""
+                                val photoUrl = currentUser?.photoUrl?.toString() ?: ""
+
+
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    try {
+                                        val sharedPref = getSharedPreferences("MySession", MODE_PRIVATE)
+                                        val editor = sharedPref.edit()
+                                        editor.putBoolean("isLoggedIn", true)
+                                        editor.apply()
+
+                                        val user = User(email, firstName, lastName, displayName, photoUrl)
+                                        val response = ApiService.apiService.createUser(user).execute()
+                                        if (response.isSuccessful) {
+                                            startActivity(intent)
+                                            finish()
+                                        } else {
+
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("WaringApi", "Error occurred during API call: ${e.message}", e)
+                                    }
+                                }
+
                                 val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
-                                finish() // Đóng LoginActivity
+
+
                             } else {
                                 // Đăng nhập không thành công
                                 Log.e("LoginActivity", "signInWithCredential:failure", task.exception)
-                                // Xử lý đăng nhập không thành công tại đây
                             }
                         }
                     }
                 } catch (e: ApiException) {
-                    // Xử lý lỗi khi đăng nhập Google
                     Log.e("LoginActivity", "signInResult:failed code=" + e.statusCode)
                 }
             }

@@ -11,14 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Models.Art;
 import com.example.myapplication.R;
+import com.example.myapplication.event.ArtworkClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ArtAdapter extends RecyclerView.Adapter<ArtAdapter.ArtViewHolder>{
     private List<Art> listUser;
-    public ArtAdapter(List<Art> listUser) {
+    private ArtworkClickListener listener; // Thêm trường listener
+
+    // Thêm tham số listener vào constructor
+    public ArtAdapter(List<Art> listUser, ArtworkClickListener listener) {
         this.listUser = listUser;
+        this.listener = listener;
     }
 
     @NonNull
@@ -35,6 +40,13 @@ public class ArtAdapter extends RecyclerView.Adapter<ArtAdapter.ArtViewHolder>{
             return;
         }
         Picasso.get().load(art.getUrl()).into(holder.url_Art);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onArtworkClicked(art);
+            }
+        });
     }
 
     @Override
